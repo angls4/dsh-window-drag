@@ -20,8 +20,11 @@ window.
   `--dsh-frame-top-clearance`) across the full width, plus the sidebar header
   block (300×104px).
 - **DoubleClick:** toggles macOS-style zoom using the screen work area.
-- **While zoomed:** the window stays draggable; double-click restores the
-  previous bounds.
+- **While zoomed:** starting a drag restores the previous size under the
+  cursor and continues the drag; double-click restores the previous bounds.
+  (Renderer-driven window moves are clamped to the screen by Chromium, so a
+  full-work-area window cannot slide as-is, and cannot be dragged off-screen
+  or onto another monitor through this plugin.)
 - **Never captured:** buttons, links, tabs, inputs, `contenteditable`, menus,
   dialogs, and any element tagged `data-no-window-drag` — clicks keep working.
 - **Disabled in fullscreen** and entirely inert on Windows/Linux or in an

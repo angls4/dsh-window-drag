@@ -138,6 +138,7 @@ window.__ModuleLoader__.load({
             x: event.screenX,
             y: event.screenY,
             moved: false,
+            bounds: currentBounds(),
           };
           try {
             document.documentElement.setPointerCapture(event.pointerId);
@@ -155,12 +156,25 @@ window.__ModuleLoader__.load({
             const dy = event.screenY - drag.startY;
             if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
             drag.moved = true;
-            window.moveBy(dx, dy);
+            if (zoomed && preZoom !== null) {
+              // Renderer-driven moves are clamped to the screen, so a zoomed
+              // (full work-area) window cannot slide anywhere: restore the
+              // previous size under the cursor first, then keep dragging.
+              const grabX = Math.min(Math.max(drag.startX - drag.bounds.x, 8), preZoom.w - 8);
+              const grabY = Math.min(Math.max(drag.startY - drag.bounds.y, 4), preZoom.h - 8);
+              window.moveTo(preZoom.x, preZoom.y);
+              window.resizeTo(preZoom.w, preZoom.h);
+              zoomed = false;
+              preZoom = null;
+              window.moveTo(event.screenX - grabX, event.screenY - grabY);
+            } else {
+              window.moveTo(window.screenX + dx, window.screenY + dy);
+            }
           } else {
             const dx = event.screenX - drag.x;
             const dy = event.screenY - drag.y;
             if (dx === 0 && dy === 0) return;
-            window.moveBy(dx, dy);
+            window.moveTo(window.screenX + dx, window.screenY + dy);
           }
           drag.x = event.screenX;
           drag.y = event.screenY;
