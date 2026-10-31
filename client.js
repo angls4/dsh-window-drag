@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: '@local/dsh-window-drag',
+  id: 'dsh-window-drag',
   factory() {
     /*
      * Some DSH Desktop builds ignore `-webkit-app-region: drag` in the main
