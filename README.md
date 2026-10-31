@@ -24,8 +24,11 @@ window.
   size centered on the cursor (clamped to the screen boundaries) and continues
   the drag; double-click restores the previous bounds.
   (Renderer-driven window moves are clamped to the screen by Chromium, so a
-  full-work-area window cannot slide as-is, and cannot be dragged off-screen
-  or onto another monitor through this plugin.)
+  full-work-area window cannot slide as-is. The shell's native resize-border
+  drag — grabbing the extreme window edge — is handled by the macOS window
+  server instead and is *not* clamped: it can move the window off-screen or to
+  another monitor while resizing. This plugin never intercepts those edge
+  drags; its zones are the top strip and sidebar header only.)
 - **Never captured:** buttons, links, tabs, inputs, `contenteditable`, menus,
   dialogs, and any element tagged `data-no-window-drag` — clicks keep working.
 - **Disabled in fullscreen** and entirely inert on Windows/Linux or in an
