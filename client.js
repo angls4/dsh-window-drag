@@ -128,6 +128,9 @@ window.__ModuleLoader__.load({
           }
 
           lastPress = { at: now, x: event.clientX, y: event.clientY };
+          // While zoomed the window fills the work area: dragging is off,
+          // double-click (manual or native) restores the previous bounds.
+          if (isZoomed(currentBounds(), workArea())) return;
           drag = {
             id: event.pointerId,
             startX: event.screenX,

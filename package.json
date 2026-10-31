@@ -1,6 +1,6 @@
 {
   "name": "dsh-window-drag",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": false,
   "type": "module",
   "description": "Restores normal title-bar behavior in DeepSeek Harness Desktop: drag to move, double-click to zoom.",
