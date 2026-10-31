@@ -20,8 +20,8 @@ window.
   `--dsh-frame-top-clearance`) across the full width, plus the sidebar header
   block (300×104px).
 - **DoubleClick:** toggles macOS-style zoom using the screen work area.
-- **While zoomed:** dragging is disabled; double-click restores the previous
-  bounds.
+- **While zoomed:** the window stays draggable; double-click restores the
+  previous bounds.
 - **Never captured:** buttons, links, tabs, inputs, `contenteditable`, menus,
   dialogs, and any element tagged `data-no-window-drag` — clicks keep working.
 - **Disabled in fullscreen** and entirely inert on Windows/Linux or in an

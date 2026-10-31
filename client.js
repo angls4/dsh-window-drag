@@ -93,19 +93,22 @@ window.__ModuleLoader__.load({
         let drag = null;
         let lastPress = null;
         let preZoom = null;
+        let zoomed = false;
         let lastZoomAt = 0;
 
         const toggleZoom = () => {
           const area = workArea();
           const bounds = currentBounds();
-          if (isZoomed(bounds, area) && preZoom !== null) {
+          if (preZoom !== null && (zoomed || isZoomed(bounds, area))) {
             window.moveTo(preZoom.x, preZoom.y);
             window.resizeTo(preZoom.w, preZoom.h);
             preZoom = null;
+            zoomed = false;
           } else {
             preZoom = bounds;
             window.moveTo(area.x, area.y);
             window.resizeTo(area.w, area.h);
+            zoomed = true;
           }
           lastZoomAt = performance.now();
         };
@@ -128,9 +131,6 @@ window.__ModuleLoader__.load({
           }
 
           lastPress = { at: now, x: event.clientX, y: event.clientY };
-          // While zoomed the window fills the work area: dragging is off,
-          // double-click (manual or native) restores the previous bounds.
-          if (isZoomed(currentBounds(), workArea())) return;
           drag = {
             id: event.pointerId,
             startX: event.screenX,
@@ -195,6 +195,7 @@ window.__ModuleLoader__.load({
           drag = null;
           lastPress = null;
           preZoom = null;
+          zoomed = false;
         };
       },
     };
