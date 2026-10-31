@@ -90,6 +90,17 @@ window.__ModuleLoader__.load({
         if (!isDarwin()) return;
 
         const clearance = titlebarHeight();
+
+        // Rescue: the native edge drag (macOS window server, unclamped) can park
+        // the window fully outside every screen, and Electron restores those
+        // bounds on the next launch — leaving it unreachable. Bring it back.
+        const bootArea = workArea();
+        const boot = currentBounds();
+        if (boot.x + boot.w <= bootArea.x || boot.x >= bootArea.x + bootArea.w ||
+            boot.y + boot.h <= bootArea.y || boot.y >= bootArea.y + bootArea.h) {
+          window.resizeTo(Math.min(boot.w, bootArea.w), Math.min(boot.h, bootArea.h));
+          window.moveTo(bootArea.x, bootArea.y);
+        }
         let drag = null;
         let lastPress = null;
         let preZoom = null;

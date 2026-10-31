@@ -29,6 +29,9 @@ window.
   server instead and is *not* clamped: it can move the window off-screen or to
   another monitor while resizing. This plugin never intercepts those edge
   drags; its zones are the top strip and sidebar header only.)
+- **Boot rescue:** if a previous session ended with the window fully outside
+  the screen (possible via the native edge drag), the plugin brings it back to
+  the screen work area at launch.
 - **Never captured:** buttons, links, tabs, inputs, `contenteditable`, menus,
   dialogs, and any element tagged `data-no-window-drag` — clicks keep working.
 - **Disabled in fullscreen** and entirely inert on Windows/Linux or in an
