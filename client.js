@@ -101,6 +101,17 @@ window.__ModuleLoader__.load({
           window.resizeTo(Math.min(boot.w, bootArea.w), Math.min(boot.h, bootArea.h));
           window.moveTo(bootArea.x, bootArea.y);
         }
+
+        // Native drag rail: a web element with `-webkit-app-region: drag` is moved
+        // by the macOS window server (unclamped: it can leave the screen or cross
+        // monitors), unlike renderer moveTo/moveBy. Builds that ignore the region
+        // simply fall through to the pointer-based drag below.
+        const rail = document.createElement('div');
+        rail.setAttribute('data-window-drag-rail', '');
+        rail.style.cssText = 'position:fixed;top:0;left:0;right:0;height:10px;'
+          + 'z-index:2147483000;background:transparent;pointer-events:auto;'
+          + '-webkit-app-region:drag;';
+        (document.body ?? document.documentElement).appendChild(rail);
         let drag = null;
         let lastPress = null;
         let preZoom = null;
@@ -237,6 +248,7 @@ window.__ModuleLoader__.load({
           lastPress = null;
           preZoom = null;
           zoomed = false;
+          rail?.remove();
         };
       },
     };
