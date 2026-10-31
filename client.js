@@ -139,6 +139,8 @@ window.__ModuleLoader__.load({
             y: event.screenY,
             moved: false,
             bounds: currentBounds(),
+            wx: 0,
+            wy: 0,
           };
           try {
             document.documentElement.setPointerCapture(event.pointerId);
@@ -166,15 +168,21 @@ window.__ModuleLoader__.load({
               window.resizeTo(preZoom.w, preZoom.h);
               zoomed = false;
               preZoom = null;
-              window.moveTo(event.screenX - grabX, event.screenY - grabY);
+              drag.wx = event.screenX - grabX;
+              drag.wy = event.screenY - grabY;
+              window.moveTo(Math.round(drag.wx), Math.round(drag.wy));
             } else {
-              window.moveTo(window.screenX + dx, window.screenY + dy);
+              drag.wx = drag.bounds.x + dx;
+              drag.wy = drag.bounds.y + dy;
+              window.moveTo(Math.round(drag.wx), Math.round(drag.wy));
             }
           } else {
             const dx = event.screenX - drag.x;
             const dy = event.screenY - drag.y;
             if (dx === 0 && dy === 0) return;
-            window.moveTo(window.screenX + dx, window.screenY + dy);
+            drag.wx += dx;
+            drag.wy += dy;
+            window.moveTo(Math.round(drag.wx), Math.round(drag.wy));
           }
           drag.x = event.screenX;
           drag.y = event.screenY;
