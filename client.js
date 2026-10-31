@@ -160,17 +160,25 @@ window.__ModuleLoader__.load({
             drag.moved = true;
             if (zoomed && preZoom !== null) {
               // Renderer-driven moves are clamped to the screen, so a zoomed
-              // (full work-area) window cannot slide anywhere: restore the
-              // previous size under the cursor first, then keep dragging.
-              const grabX = Math.min(Math.max(drag.startX - drag.bounds.x, 8), preZoom.w - 8);
-              const grabY = Math.min(Math.max(drag.startY - drag.bounds.y, 4), preZoom.h - 8);
-              window.moveTo(preZoom.x, preZoom.y);
-              window.resizeTo(preZoom.w, preZoom.h);
+              // (full work-area) window cannot slide as-is: shrink it back to
+              // the previous size centered on the cursor (clamped inside the
+              // screen boundaries), then keep dragging from there.
+              const area = workArea();
+              const scr = window.screen;
+              const w = Math.min(preZoom.w, area.w);
+              const h = Math.min(preZoom.h, area.h);
+              const sl = Number.isFinite(scr.left) ? scr.left : area.x;
+              const st = Number.isFinite(scr.top) ? scr.top : area.y;
+              const sw = scr.width || area.w;
+              const sh = scr.height || area.h;
+              const x = Math.min(Math.max(event.screenX - w / 2, sl), sl + sw - w);
+              const y = Math.min(Math.max(event.screenY - h / 2, st), st + sh - h);
+              window.resizeTo(w, h);
               zoomed = false;
               preZoom = null;
-              drag.wx = event.screenX - grabX;
-              drag.wy = event.screenY - grabY;
-              window.moveTo(Math.round(drag.wx), Math.round(drag.wy));
+              drag.wx = x;
+              drag.wy = y;
+              window.moveTo(Math.round(x), Math.round(y));
             } else {
               drag.wx = drag.bounds.x + dx;
               drag.wy = drag.bounds.y + dy;
