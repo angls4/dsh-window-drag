@@ -1,0 +1,47 @@
+{
+  "name": "dsh-window-drag",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Restores normal title-bar behavior in DeepSeek Harness Desktop: drag to move, double-click to zoom.",
+  "license": "MIT",
+  "author": "Adnan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angls4/dsh-window-drag.git"
+  },
+  "homepage": "https://github.com/angls4/dsh-window-drag",
+  "bugs": {
+    "url": "https://github.com/angls4/dsh-window-drag/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "window-drag",
+    "titlebar",
+    "macos"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
